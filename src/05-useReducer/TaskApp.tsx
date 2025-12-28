@@ -24,6 +24,7 @@ export const TasksApp = () => {
     // ✅ Siempre usar una funcion "dispatcher"
     // setTodos((prev) => [...prev, newTodo])
     // setTodos([...todos, newTodo]);
+    setInputValue("");
   };
 
   // TODO: Implementar

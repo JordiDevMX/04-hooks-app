@@ -1,4 +1,5 @@
-// Patron agnostico para la "logica del negocio"
+// Todo es un patron agnostico para la "logica del negocio"
+import * as z from "zod";
 interface Todo {
   id: number;
   text: string;
@@ -17,6 +18,19 @@ export type TaskAction =
   | { type: "TOGGLE_TODO"; payload: number } // Valor, o argumento, de una accion
   | { type: "DELETE_TODO"; payload: number };
 
+const TodoSchema = z.object({
+  id: z.number(),
+  text: z.string(),
+  completed: z.boolean(),
+});
+
+const TaskStateScheme = z.object({
+  todos: z.array(TodoSchema),
+  length: z.number(),
+  completed: z.number(),
+  pending: z.number(),
+});
+
 export const getTasksInitialState = (): TaskState => {
   const localStorageState = localStorage.getItem("tasks-state");
 
@@ -29,8 +43,21 @@ export const getTasksInitialState = (): TaskState => {
     };
   }
 
+  const result = TaskStateScheme.safeParse(JSON.parse(localStorageState));
+
+  if (result.error) {
+    console.log(result.error);
+    return {
+      todos: [],
+      completed: 0,
+      pending: 0,
+      length: 0,
+    };
+  }
+
   // ! Cuidado! El objeto pudo haber sido manipulado
-  return JSON.parse(localStorageState);
+  // return JSON.parse(localStorageState);
+  return result.data;
 };
 
 export const taskReducer = (
