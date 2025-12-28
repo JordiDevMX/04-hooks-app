@@ -13,6 +13,10 @@ export const TasksApp = () => {
   // const [todos, setTodos] = useState<Todo[]>([]);
   const [state, dispatch] = useReducer(taskReducer, getTasksInitialState());
 
+  useEffect(() => {
+    localStorage.setItem("tasks-state", JSON.stringify(state));
+  }, [state]);
+
   const addTodo = () => {
     if (inputValue.length === 0) return;
     dispatch({ type: "ADD_TODO", payload: inputValue });
