@@ -17,6 +17,15 @@ export type TaskAction =
   | { type: "TOGGLE_TODO"; payload: number } // Valor, o argumento, de una accion
   | { type: "DELETE_TODO"; payload: number };
 
+export const getTasksInitialState = (): TaskState => {
+  return {
+    todos: [],
+    completed: 0,
+    length: 0,
+    pending: 0,
+  };
+};
+
 export const taskReducer = (
   state: TaskState,
   action: TaskAction
@@ -42,6 +51,7 @@ export const taskReducer = (
 
       // ! Nunca se debe mutar el state
       // state.todos.push(newTodo)
+
       return {
         ...state,
         todos: [...state.todos, newTodo],
