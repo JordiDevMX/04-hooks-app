@@ -90,7 +90,9 @@ export type ScrambleWordsActions =
       type: "SET_GUESS_INPUT";
       payload: string;
     }
-  | { type: "CHECK_ANSWER" };
+  | { type: "CHECK_ANSWER" }
+  | { type: "SKIP_WORD" }
+  | { type: "START_NEW_GAME"; payload: ScrambleWordsState };
 
 export const scrambleWordsReducer = (
   state: ScrambleWordsState,
@@ -123,6 +125,25 @@ export const scrambleWordsReducer = (
         errorCounter: state.errorCounter + 1,
         isGameOver: state.errorCounter + 1 >= state.maxAllowErrors,
       };
+    }
+
+    case "SKIP_WORD": {
+      if (state.skipCounter >= state.maxSkips) return state;
+      const updatedWords = state.words.slice(1);
+
+      return {
+        ...state,
+        skipCounter: state.skipCounter + 1,
+        words: updatedWords,
+        currentWord: updatedWords[0],
+        scrambledWord: scrambleWord(updatedWords[0]),
+        guessInput: "",
+      };
+    }
+
+    case "START_NEW_GAME": {
+      // return getInitialState()
+      return action.payload;
     }
 
     default:
