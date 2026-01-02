@@ -50,6 +50,11 @@ export const ScrambleWords = () => {
 
   const handleGuessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    dispatch({
+      type: "CHECK_ANSWER",
+    });
+
     // setGuessInput("");
 
     // Implementar lógica de juego
@@ -187,9 +192,14 @@ export const ScrambleWords = () => {
                     id="guess"
                     type="text"
                     value={guessInput}
-                    // onChange={(e) =>
-                    //   // setGuessInput(e.target.value.toUpperCase().trim())
-                    // }
+                    onChange={
+                      (e) =>
+                        dispatch({
+                          type: "SET_GUESS_INPUT",
+                          payload: e.target.value,
+                        })
+                      //   // setGuessInput(e.target.value.toUpperCase().trim())
+                    }
                     placeholder="Ingresa tu palabra..."
                     className="text-center text-lg font-semibold h-12 border-2 border-indigo-200 focus:border-indigo-500 transition-colors"
                     maxLength={scrambledWord.length}
@@ -210,7 +220,7 @@ export const ScrambleWords = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 text-center border border-green-200">
                 <div className="text-2xl font-bold text-green-600">
-                  {points} / {GAME_WORDS.length}
+                  {points} / {17}
                 </div>
                 <div className="text-sm text-green-700 font-medium">Puntos</div>
               </div>

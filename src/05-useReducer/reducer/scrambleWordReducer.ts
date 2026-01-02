@@ -85,15 +85,46 @@ export const getInitialState = (): ScrambleWordsState => {
   };
 };
 
-export type ScrambleWordsActions = {
-  type: "smn";
-};
+export type ScrambleWordsActions =
+  | {
+      type: "SET_GUESS_INPUT";
+      payload: string;
+    }
+  | { type: "CHECK_ANSWER" };
 
 export const scrambleWordsReducer = (
   state: ScrambleWordsState,
   action: ScrambleWordsActions
-) => {
+): ScrambleWordsState => {
   switch (action.type) {
+    case "SET_GUESS_INPUT":
+      return {
+        ...state,
+        guessInput: action.payload.trim().toUpperCase(),
+      };
+
+    case "CHECK_ANSWER": {
+      if (state.currentWord === state.guessInput) {
+        const newWords = state.words.slice(1);
+
+        return {
+          ...state,
+          words: newWords,
+          points: state.points + 1,
+          guessInput: "",
+          currentWord: newWords[0],
+          scrambledWord: scrambleWord(newWords[0]),
+        };
+      }
+
+      return {
+        ...state,
+        guessInput: "",
+        errorCounter: state.errorCounter + 1,
+        isGameOver: state.errorCounter + 1 >= state.maxAllowErrors,
+      };
+    }
+
     default:
       return state;
   }
