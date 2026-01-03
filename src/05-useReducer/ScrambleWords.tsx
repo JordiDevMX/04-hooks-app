@@ -2,7 +2,7 @@
 // Es necesario componentes de Shadcn/ui
 // https://ui.shadcn.com/docs/installation/vite
 
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,8 +12,6 @@ import {
   getInitialState,
   scrambleWordsReducer,
 } from "./reducer/scrambleWordReducer";
-
-const GAME_WORDS = [];
 
 export const ScrambleWords = () => {
   const [state, dispatch] = useReducer(scrambleWordsReducer, getInitialState());
@@ -29,7 +27,18 @@ export const ScrambleWords = () => {
     scrambledWord,
     skipCounter,
     words,
+    totalWords,
   } = state;
+
+  useEffect(() => {
+    if (points === 0) return;
+
+    confetti({
+      particleCount: 100,
+      spread: 120,
+      origin: { y: 0.6 },
+    });
+  }, [points]); // <--- Vigilando a "points" para que, cuando cambie, entonces "ocasionar un efecto"
 
   const handleGuessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,14 +54,6 @@ export const ScrambleWords = () => {
 
   const handlePlayAgain = () => {
     dispatch({ type: "START_NEW_GAME", payload: getInitialState() });
-    // setPoints(0);
-    // setErrorCounter(0);
-    // setSkipCounter(0);
-    // setGuessInput("");
-    // setWords(shuffleArray(GAME_WORDS));
-    // setCurrentWord(words[0]);
-    // setScrambledWord(scrambleWord(words[0]));
-    // setIsGameOver(false);
   };
 
   //! Si ya no hay palabras para jugar, se muestra el mensaje de fin de juego
@@ -160,7 +161,7 @@ export const ScrambleWords = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4 text-center border border-green-200">
                 <div className="text-2xl font-bold text-green-600">
-                  {points} / {17}
+                  {points} / {totalWords}
                 </div>
                 <div className="text-sm text-green-700 font-medium">Puntos</div>
               </div>

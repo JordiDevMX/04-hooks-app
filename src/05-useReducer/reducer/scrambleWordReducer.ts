@@ -1,3 +1,4 @@
+// ! Un reducer solo debe calcular y devolver el siguiente estado.
 export interface ScrambleWordsState {
   currentWord: string;
   errorCounter: number;
@@ -11,19 +12,6 @@ export interface ScrambleWordsState {
   words: string[];
   totalWords: number;
 }
-
-// export interface ScrambleState {
-//     word: string;
-//     scrambled: string;
-//     attempts: number;
-//     solved: boolean;
-// }
-
-// export type ScrambleAction =
-//     | { type: 'SCRAMBLE'; payload: string }
-//     | { type: 'CHECK_WORD'; payload: string }
-//     | { type: 'RESET' }
-//     | { type: 'INCREMENT_ATTEMPTS' };
 
 const GAME_WORDS = [
   "REACT",
@@ -44,15 +32,6 @@ const GAME_WORDS = [
   "VITE",
   "TAILWIND",
 ];
-
-// const scrambleWord = (word: string): string => {
-//     const arr = word.split('');
-//     for (let i = arr.length - 1; i > 0; i--) {
-//         const j = Math.floor(Math.random() * (i + 1));
-//         [arr[i], arr[j]] = [arr[j], arr[i]];
-//     }
-//     return arr.join('');
-// };
 
 // Esta función mezcla el arreglo para que siempre sea aleatorio
 const shuffleArray = (array: string[]) => {
@@ -108,6 +87,7 @@ export const scrambleWordsReducer = (
     case "CHECK_ANSWER": {
       if (state.currentWord === state.guessInput) {
         const newWords = state.words.slice(1);
+        // ! Put confetti here
 
         return {
           ...state,
@@ -150,44 +130,3 @@ export const scrambleWordsReducer = (
       return state;
   }
 };
-
-// export const scrambleWordReducer = (
-//     state: ScrambleState,
-//     action: ScrambleAction
-// ): ScrambleState => {
-//     switch (action.type) {
-//         case 'SCRAMBLE':
-//             return {
-//                 ...state,
-//                 word: action.payload,
-//                 scrambled: scrambleWord(action.payload),
-//                 attempts: 0,
-//                 solved: false,
-//             };
-
-//         case 'CHECK_WORD':
-//             const isSolved = action.payload.toLowerCase() === state.word.toLowerCase();
-//             return {
-//                 ...state,
-//                 solved: isSolved,
-//                 attempts: state.attempts + 1,
-//             };
-
-//         case 'INCREMENT_ATTEMPTS':
-//             return {
-//                 ...state,
-//                 attempts: state.attempts + 1,
-//             };
-
-//         case 'RESET':
-//             return {
-//                 word: '',
-//                 scrambled: '',
-//                 attempts: 0,
-//                 solved: false,
-//             };
-
-//         default:
-//             return state;
-//     }
-// };
