@@ -1,4 +1,5 @@
 import { useOptimistic, useState, useTransition } from "react";
+import { toast } from "sonner";
 
 interface Comment {
   id: number;
@@ -37,13 +38,25 @@ export const InstagromApp = () => {
     startTransition(async () => {
       // Simulacion de peticion HTTP
       await new Promise((resolve) => setTimeout(resolve, 3000));
-      setComments((prev) => [
-        ...prev,
-        {
-          id: new Date().getTime(),
-          text: messageText,
+      //   setComments((prev) => [
+      //     ...prev,
+      //     {
+      //       id: new Date().getTime(),
+      //       text: messageText,
+      //     },
+      //   ]);
+
+      // ! Simulacion para revertir el cambio en caso de que falle la peticion
+      setComments((prev) => prev);
+      toast("Error al agregar el comentario", {
+        description: "Intente nuevamente despues",
+        duration: 10_000,
+        position: "top-right",
+        action: {
+          label: "Cerrar",
+          onClick: () => toast.dismiss(),
         },
-      ]);
+      });
     });
   };
 
