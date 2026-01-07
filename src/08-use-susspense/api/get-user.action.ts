@@ -2,11 +2,13 @@ export interface User {
   id: number;
   name: string;
   location: string;
-  sole: string;
+  role: string;
 }
 
 export const getUserAction = async (id: number) => {
-  await new Promise((res) => setTimeout(resizeBy, 2000));
+  console.log("Funcion llamada");
+  await new Promise((res) => setTimeout(res, 2000));
+  console.log("funcion resolvio");
 
   return {
     id: id,
