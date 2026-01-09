@@ -14,21 +14,32 @@ interface UserContextProps {
   logout: () => void;
 }
 
-export const UserContext = createContext({});
+export const UserContext = createContext({} as UserContextProps);
 
 // Hay mil maneras de tipar el children, pero esta es la mas eficiente de todas ()
 // Los providers son HOC: Higher Order Component
 export const UserContextProvider = ({ children }: PropsWithChildren) => {
-  const [authStatus, setAuthStatus] = useState("checking");
+  const [authStatus, setAuthStatus] = useState<AuthStatus>("checking");
   const [user, setUser] = useState<User | null>(null);
 
   const handleLogin = (userId: number) => {
-    console.log({ userId });
+    const user = users.find((user) => user.id === userId);
+    if (!user) {
+      console.log(`User not found ${userId}`);
+      setUser(null);
+      setAuthStatus("not-authenticated");
+      return false;
+    }
+
+    setUser(user);
+    setAuthStatus("authenticated");
     return true;
   };
 
   const handleLogout = () => {
     console.log("logout");
+    setAuthStatus("not-authenticated");
+    setUser(null);
   };
 
   // Se recomienda que el provider se use para logica de negocio,
