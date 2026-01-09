@@ -1,9 +1,10 @@
 import { UserContext } from "@/09-useContext/context/UserContext";
 import { Button } from "@/components/ui/button";
-import { useContext } from "react";
+import { use } from "react";
+import { Link } from "react-router";
 
 export const ProfilePage = () => {
-  const { user } = useContext(UserContext);
+  const { user, logout } = use(UserContext);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
@@ -23,10 +24,11 @@ export const ProfilePage = () => {
           <strong>Proyectos:</strong> {user?.stats.projects}
         </p>
       </div>
-
-      <Button variant="destructive" className="mt-4">
-        Salir
-      </Button>
+      <Link to="/">
+        <Button variant="destructive" className="mt-4" onClick={logout}>
+          Salir
+        </Button>
+      </Link>
     </div>
   );
 };

@@ -16,7 +16,6 @@ export const LoginPage = () => {
     if (!result) return toast.error("Usuario no encontrado");
 
     navigation("/profile");
-    // TODO: Mostrar el usuario usando el useContext
   };
 
   return (
