@@ -24,11 +24,10 @@ export const ProfilePage = () => {
           <strong>Proyectos:</strong> {user?.stats.projects}
         </p>
       </div>
-      <Link to="/">
-        <Button variant="destructive" className="mt-4" onClick={logout}>
-          Salir
-        </Button>
-      </Link>
+
+      <Button variant="destructive" className="mt-4" onClick={logout}>
+        Salir
+      </Button>
     </div>
   );
 };
